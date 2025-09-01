@@ -5,6 +5,68 @@ This script contains the functions required for loading the 1D data for tuning a
 import numpy as np
 
 
+def load_data_simon(file_path, num_samples_per_class=None, num_features=None):
+    """
+        This function is used for loading and processing the SIMON32/64 dataset.
+        :param file_path: path of the .npz file containing dataset
+        :return: features, and labels
+        """
+    print(f"loading the dataset from {file_path} ...")
+    # Load data from the .npz file
+    data = np.load(file_path, allow_pickle=True)
+    x = data['cipher_text_binary']  # Feature data
+    x = np.array([[int(ch) for ch in s] for s in x])
+    y = data['plain_text']  # Labels
+
+    # Print the shape of the features and the first 5 data points
+    print("Shape of the features:", x.shape)
+    print("First 5 feature data points:\n", x[:5])
+    print("First 5 label data points:\n", y[:5])
+
+    # Print the shape of the features and the first 5 data points
+    print("Shape of the features:", x.shape)
+    print("First 5 feature data points:\n", x[:5])
+    print("First 5 label data points:\n", y[:5])
+
+    # Process selection of samples per class
+    unique_classes = np.unique(y)  # Unique class labels
+
+    # number of unique classes in the dataset
+    num_classes = len(unique_classes)
+
+    final_x = []
+    final_y = []
+
+    for cls in unique_classes:
+        indices = np.where(y == cls)[0]
+        if num_samples_per_class is None:
+            # If num_samples_per_class is None, use all samples for that class
+            selected_indices = indices
+        elif num_samples_per_class >= indices.size:
+            # If num_samples_per_class is more than available samples, use all samples
+            selected_indices = indices
+        else:
+            # Otherwise, randomly select the specified number of samples
+            selected_indices = np.random.choice(indices, num_samples_per_class, replace=False)
+
+        final_x.append(x[selected_indices])
+        final_y.append(y[selected_indices])
+
+    # Concatenate results from all classes
+    final_x = np.vstack(final_x)
+    final_y = np.concatenate(final_y)
+
+    # Finding the unique elements and their counts
+    print("unique classes and counts after processing the dataset ...")
+    unique_classes, counts = np.unique(final_y, return_counts=True)
+
+    # Printing the unique classes and their counts
+    for cls, count in zip(unique_classes, counts):
+        print(f"Class {cls}: {count} occurrences")
+
+    return final_x, final_y, num_classes
+
+
 class DataLoader1D:
     """
     This class is used for loading the 1D data required for tuning, training, and testing of the deep learning models.

@@ -6,8 +6,8 @@ The two messages P1 and P2 are encrypted using SPECK32/64-CBC mode of encryption
 - Class 1: Enc(IV2i XOR P2)
 
 The two messages selected for encryption are as follows:
-   1. P1 = 0
-   2. P2 = 1
+   1. P1 = 0 (32-bit)
+   2. P2 = 1 (32-bit)
 
 
 The size of the input vector to ML classifier is 32 bits where the ciphertext of each message is represented using 2 words. Each word is 16-bits long that represents first and second half of Pi considered.
@@ -115,6 +115,10 @@ if __name__ == "__main__":
     parser.add_argument('--dataset_dir_path', type=str, required=True)
     parser.add_argument('--statistics_dir_path', type=str, required=True)
     args = parser.parse_args()
+
+    os.makedirs(args.models_dir_path, exist_ok=True)
+    os.makedirs(args.dataset_dir_path, exist_ok=True)
+    os.makedirs(args.statistics_dir_path, exist_ok=True)
 
     # create the network
     net = make_resnet(depth=args.depth, reg_param=10 ** -5)
