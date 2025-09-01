@@ -34,8 +34,8 @@ from tensorflow.keras.utils import to_categorical
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Experiment settings for cipher classification")
-    parser.add_argument('--cipher_name', type=str, default="simon-32-64", choices=['simon-32-64', 'speck-32-64'],
-                        help='Cipher type to use (simon-32-64 or speck-32-64)')
+    parser.add_argument('--cipher_name', type=str, default="simon-32-64", choices=['simon-32-64'],
+                        help='Cipher type to use (simon-32-64)')
     parser.add_argument('--rounds', type=int, default=32,
                         help='Number of cipher rounds')
     parser.add_argument('--dataset_name', type=str, default="exp-a-simon-32-64-cbc-enc-0-vs-enc-1",
