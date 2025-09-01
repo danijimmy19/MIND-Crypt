@@ -233,10 +233,6 @@ class ModelTrainer:
     def train_model(self, x_train, y_train, x_valid, y_valid, nb_classes, model_path):
         if self.name == "bi-lstm-binary":
             model = biLSTMBinary(self.params, self.input_shape, nb_classes, self.name)
-        if self.name == "cnn-bi-lstm-binary":
-            model = CNNbiLSTMBinary(self.params, self.input_shape, nb_classes, self.name)
-        if self.name == "bi-lstm-cnn-binary":
-            model = biLSTMCNNBinary(self.params, self.input_shape, nb_classes, self.name)
         if self.name == "cnn-1d-binary":
             model = cnn1dBinary(self.params, self.input_shape, nb_classes, self.name)
         if self.name == "lstm-binary":
